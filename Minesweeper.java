@@ -28,7 +28,6 @@ public class Minesweeper extends JFrame implements ActionListener{
 	public GridButton [][] buttons = new GridButton[10][10];
 	public int [][] facit = new int[10][10];
 
-	private Color myRed = new Color(185,2,1);
 	private Color myBlack = new Color(0,0,0);
 	private Color myBlue = new Color(0,75,200);
 	final int FPS_MIN = 0;
@@ -42,11 +41,19 @@ public class Minesweeper extends JFrame implements ActionListener{
 	private DecimalFormat dFormat = new DecimalFormat("00");
 	public int rightClicks = 0;
 
+	//Font
+	private Font bombFontL = new Font("Copperplate Gothic Light", Font.BOLD, 25);
+	private Font bombFontS = new Font("Copperplate Gothic Light", Font.BOLD, 15);
+	private Color bombFontColor = new Color(185,2,1);
+
+	private Font catFontS = new Font("Gill Sans", Font.BOLD, 25);
+	private Font catFontL = new Font("Gill Sans", Font.BOLD, 15);
+	private Color catFontColor = Color.BLACK;
+
 	public Minesweeper() {
     Container c = getContentPane();
 		c.setLayout(null);
 
-		//counter = 0;
 		//Load backgrounds
 		bgImage01 = new ImageIcon("graphics/BombBackground2.png");
 		bgImage02 = new ImageIcon("graphics/Cat-sweeper.png");
@@ -61,34 +68,34 @@ public class Minesweeper extends JFrame implements ActionListener{
 		clock = new Timer(17, this);				
 		timeLabel = new JLabel("Time:");
 		timeLabel.setBounds(440,330,385,30);
-		timeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
-		timeLabel.setForeground(myRed);
+		timeLabel.setFont(bombFontL);
+		timeLabel.setForeground(bombFontColor);
 		timeTA = new JTextField();
 		timeTA.setBounds(440, 360, 100, 30);
 		timeTA.setEditable(false);
-		timeTA.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 15));
+		timeTA.setFont(bombFontS);
 		timeTA.setHorizontalAlignment(timeTA.RIGHT);
 		
 		//Nr of mines swept
 		mineLabel = new JLabel("Bombs:");
 		mineLabel.setBounds(440,400,160,30);
-		mineLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
-		mineLabel.setForeground(myRed);
+		mineLabel.setFont(bombFontL);
+		mineLabel.setForeground(bombFontColor);
 		mineTA = new JTextField(rightClicks + "/10");
 		mineTA.setBounds(440, 430, 60, 30);
 		mineTA.setEditable(false);
-		mineTA.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 15));
+		mineTA.setFont(bombFontS);
 		mineTA.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);  
 		
 		//Volume slider
 		volumeLabel = new JLabel("Volume:");
 		volumeLabel.setBounds(440,470,150,30);
-		volumeLabel.setForeground(myRed);
+		volumeLabel.setForeground(bombFontColor);
 		/*http://download.oracle.com/javase/tutorial/uiswing/components/slider.html*/
 		JSlider volumeBar = new JSlider(JSlider.HORIZONTAL,FPS_MIN, FPS_MAX, FPS_INIT);
 		volumeBar.setBounds(440,500,125,20);
 		volumeBar.setOpaque(false);
-		volumeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
+		volumeLabel.setFont(bombFontL);
 
 		flag = new ImageIcon("graphics/flag.png");
 		
@@ -206,95 +213,85 @@ public class Minesweeper extends JFrame implements ActionListener{
 		setVisible(true);
 		setResizable(false);
 		setTitle("Sweeper!");
-    }
+  }
     
-    //Denna lag fran borjan i konstruktorn dar newGame() ligger, 
-    //flyttades hit for att man skall kunna starta ett nytt spel genom att klicka pa new game i menyn men det fungerar inte.
-    public void newGame(){  
-    	int nrOfMines = 0;
-    	    
-	   	//clock = new Timer(10, this);				//Skapa klocka, nollstall klocka, starta klocka.
-			secs = 0;
-			mins = 0;
-			hrs = 0;
-			rightClicks = 0;
-	    stopClock();
-			timeTA.setText("00:00:00");
-	    mineTA.setText(rightClicks + "/10");
-	    	
-	  	for(int i=1; i<10; i++){
-	  		for(int j=1; j<10; j++){
-	  			buttons[i][j].reset(theme);
-	  			
-	  		}
-	  	}
-	    	
-			while(nrOfMines < 10) {
-				Random r = new Random();
-				int x = r.nextInt(9) + 1;
-				int y = r.nextInt(9) + 1;
+  //Denna lag fran borjan i konstruktorn dar newGame() ligger, 
+  //flyttades hit for att man skall kunna starta ett nytt spel genom att klicka pa new game i menyn men det fungerar inte.
+  public void newGame(){
+  	int nrOfMines = 0;
+  	    
+   	//clock = new Timer(10, this);				//Skapa klocka, nollstall klocka, starta klocka.
+		secs = 0;
+		mins = 0;
+		hrs = 0;
+		rightClicks = 0;
+    stopClock();
+		timeTA.setText("00:00:00");
+    mineTA.setText(rightClicks + "/10");
+    	
+  	for(int i=1; i<10; i++){
+  		for(int j=1; j<10; j++){
+  			buttons[i][j].reset(theme);
+  			
+  		}
+  	}
+    	
+		while(nrOfMines < 10) {
+			Random r = new Random();
+			int x = r.nextInt(9) + 1;
+			int y = r.nextInt(9) + 1;
 
-				//ta fram random pos
-				
-				if (buttons[x][y].plantBomb()) {
-					nrOfMines++;
-					facit[x][y] = 9;
-				}
+			//ta fram random pos
+			if (buttons[x][y].plantBomb()) {
+				nrOfMines++;
+				facit[x][y] = 9;
 			}
-					
-			for(int i=1; i<10; i++){
-	    		for(int j=1; j<10; j++){
-	    			if(!buttons[i][j].hasBomb())
-	    				facit[i][j] = buttons[i][j].checkNeighbours();
-	    				
-	    			System.out.println(facit[i][j]);
-	    			
-	    		}
-	    	}
-			
-			/*for(int i=1; i<10; i++){
-				for(int j=1; j<10; j++){
-					facit[i][j] = 0;
-				}
-			}*/
-	    }
-	    
-	    public void startClock(){
-				clock.start();
-			}
-		
-		public void stopClock(){
-			clock.stop();
 		}
-
+				
+		for(int i=1; i<10; i++){
+    		for(int j=1; j<10; j++){
+    			if(!buttons[i][j].hasBomb())
+    				facit[i][j] = buttons[i][j].checkNeighbours();
+    			System.out.println(facit[i][j]);
+  		}
+  	}
+  }
     
-    public void disableAll(){
-    	for(int i=1; i<10; i++) for(int j=1; j<10; j++){
-    		if(buttons[i][j].investigate()==false){
-    			buttons[i][j].setEnabled(false);
-    		}
-    	}
-    }
+  public void startClock(){
+		clock.start();
+	}
 
-    public void youWin(){
-    	stopClock();    	
-        JOptionPane.showMessageDialog(this, "CONGRATULATIONS,\n you won!");
+	public void stopClock(){
+		clock.stop();
+	}
+	  
+  public void disableAll(){
+  	for(int i=1; i<10; i++) for(int j=1; j<10; j++){
+  		if(buttons[i][j].investigate()==false){
+  			buttons[i][j].setEnabled(false);
+  		}
+  	}
+  }
+
+  public void youWin(){
+  	stopClock();    	
+    JOptionPane.showMessageDialog(this, "CONGRATULATIONS,\n you won!");
 		disableAll(); //det gar inte att trycka pa nan knapp						
-    }
+	}
 
-    public void youLose(){
-    	stopClock();
+  public void youLose(){
+  	stopClock();
 
-    	for(int j=1; j<10; j++){ //kolumn
-				for(int i=1; i<10; i++){ //rad
-					buttons[i][j].showBomb(theme);
-				}
+  	for(int j=1; j<10; j++){ //kolumn
+			for(int i=1; i<10; i++){ //rad
+				buttons[i][j].showBomb(theme);
 			}
-    	disableAll(); //det gar inte att trycka pa nan knapp
+		}
+  	disableAll(); //det gar inte att trycka pa nan knapp
 
-    }
+  }
 
-    WindowListener frameListener = new WindowAdapter() {
+  WindowListener frameListener = new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {
 			dispose();
 			System.exit(0);
@@ -383,14 +380,14 @@ public class Minesweeper extends JFrame implements ActionListener{
 					buttons[i][j].setBackground(Color.BLACK);
 				}
 				mineLabel.setText("Bombs:");
-				timeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
-				timeTA.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 15));
-				timeLabel.setForeground(myRed);
-				mineLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
-				mineTA.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 15));
-				mineLabel.setForeground(myRed);
-				volumeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
-				volumeLabel.setForeground(myRed);
+				timeLabel.setFont(bombFontL);
+				timeTA.setFont(bombFontS);
+				timeLabel.setForeground(bombFontColor);
+				mineLabel.setFont(bombFontL);
+				mineTA.setFont(bombFontS);
+				mineLabel.setForeground(bombFontColor);
+				volumeLabel.setFont(bombFontL);
+				volumeLabel.setForeground(bombFontColor);
 				bgLabel.setIcon(bgImage01);
 				theme = 1;
 			}
@@ -410,15 +407,15 @@ public class Minesweeper extends JFrame implements ActionListener{
 					buttons[i][j].setBackground(Color.WHITE);
 				}
 				bgLabel.setIcon(bgImage02);
-				timeLabel.setForeground(Color.BLACK);
-				timeLabel.setFont(new Font("Gill Sans", Font.BOLD, 25));
-				timeTA.setFont(new Font("Gill Sans", Font.BOLD, 15));
-				mineLabel.setForeground(Color.BLACK);
-				mineLabel.setFont(new Font("Gill Sans", Font.BOLD, 25));
+				timeLabel.setForeground(catFontColor);
+				timeLabel.setFont(catFontS);
+				timeTA.setFont(catFontL);
+				mineLabel.setForeground(catFontColor);
+				mineLabel.setFont(catFontS);
 				mineLabel.setText("Cats:");
-				mineTA.setFont(new Font("Gill Sans", Font.BOLD, 15));
-				volumeLabel.setFont(new Font("Gill Sans", Font.BOLD, 25));
-				volumeLabel.setForeground(Color.BLACK);
+				mineTA.setFont(catFontL);
+				volumeLabel.setFont(catFontS);
+				volumeLabel.setForeground(catFontColor);
 				theme = 2;
 			}
 			else {
