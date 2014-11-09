@@ -1,5 +1,5 @@
 /**
-* MinesweeperInterface.java
+* Minesweeper.java
 * Karjo och Slemma
 * 2014/11/09
 */
@@ -20,7 +20,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 	private JRadioButtonMenuItem beginnerItem, intermediateItem, expertItem, bombItem, catItem, sweItem, engItem; //multiple themes?
 	private ButtonGroup difficultyGroup, themeGroup, languageGroup;
 	private JLabel bgLabel, mineLabel, timeLabel, volumeLabel;
-	private ImageIcon bgImage01, bgImage02, flag;
+	private ImageIcon bgImages[2], flag; //, bgImage01, bgImage02;
 	private int theme, counter, left;
 	private JSlider volumeBar;
 	public JTextField mineTA, timeTA;
@@ -45,61 +45,64 @@ public class Minesweeper extends JFrame implements ActionListener{
 
 	public int rightClicks = 0;
 
-	//Font
-	private Font bombFontL = new Font("Copperplate Gothic Light", Font.BOLD, 25);
-	private Font bombFontS = new Font("Copperplate Gothic Light", Font.BOLD, 15);
-	private Color bombFontColor = new Color(185,2,1);
+	private Font largeFont[2] , smallFont[2];
+	private Color fontColor[2];
+	private String[] themeText = {"Bombs: ", "Cats: "};
+	largeFont[0] = new Font("Copperplate Gothic Light", Font.BOLD, 25);
+	smallFont[0] = new Font("Copperplate Gothic Light", Font.BOLD, 15);
+	fontColor[0] = new Color(185,2,1);
 
-	private Font catFontS = new Font("Gill Sans", Font.BOLD, 25);
-	private Font catFontL = new Font("Gill Sans", Font.BOLD, 15);
-	private Color catFontColor = Color.BLACK;
+	largeFont[1] = new Font("Gill Sans", Font.BOLD, 25);
+	largeFont[1] = new Font("Gill Sans", Font.BOLD, 15);
+	fontColor[1] = Color.BLACK;
 
 	public Minesweeper() {
 		Container c = getContentPane();
 		c.setLayout(null);
 
 		//Load backgrounds
-		bgImage01 = new ImageIcon("graphics/BombBackground2.png");
-		bgImage02 = new ImageIcon("graphics/Cat-sweeper.png");
+		bgImages[0] = new ImageIcon("graphics/BombBackground2.png");
+		bgImages[1] = new ImageIcon("graphics/Cat-sweeper.png");
+
 
 		//Default theme: Regular mine sweeper
-		theme = 1;
+		theme = 0;
 		bgLabel = new JLabel();
-		bgLabel.setIcon(bgImage01);
+		bgLabel.setIcon(bgImages[0]);
 		bgLabel.setBounds(0,0,580,800);
 
 		//Timer
 		clock = new Timer(17, this);				
 		timeLabel = new JLabel("Time:");
 		timeLabel.setBounds(440,330,385,30);
-		timeLabel.setFont(bombFontL);
-		timeLabel.setForeground(bombFontColor);
+		timeLabel.setFont(largeFont[theme]);
+		timeLabel.setForeground(fontColor[theme]);
 		timeTA = new JTextField();
 		timeTA.setBounds(440, 360, 100, 30);
 		timeTA.setEditable(false);
-		timeTA.setFont(bombFontS);
+		timeTA.setFont(smallFont[theme]);
 		timeTA.setHorizontalAlignment(timeTA.RIGHT);
 
 		//Nr of mines swept
 		mineLabel = new JLabel("Bombs:");
 		mineLabel.setBounds(440,400,160,30);
-		mineLabel.setFont(bombFontL);
-		mineLabel.setForeground(bombFontColor);
+		mineLabel.setFont(largeFont[theme]);
+		mineLabel.setForeground(fontColor[theme]);
 		mineTA = new JTextField(rightClicks + "/10");
 		mineTA.setBounds(440, 430, 60, 30);
 		mineTA.setEditable(false);
-		mineTA.setFont(bombFontS);
+		mineTA.setFont(smallFont[theme]);
 		mineTA.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);  
 
 		//Volume slider
 		volumeLabel = new JLabel("Volume:");
 		volumeLabel.setBounds(440,470,150,30);
-		volumeLabel.setForeground(bombFontColor);
+		volumeLabel.setForeground(fontColor[theme]);
 		/*http://download.oracle.com/javase/tutorial/uiswing/components/slider.html*/
 		JSlider volumeBar = new JSlider(JSlider.HORIZONTAL,FPS_MIN, FPS_MAX, FPS_INIT);
 		volumeBar.setBounds(440,500,125,20);
 		volumeBar.setOpaque(false);
-		volumeLabel.setFont(bombFontL);
+		volumeLabel.setFont(largeFont[theme]);
 
 		flag = new ImageIcon("graphics/flag.png");
 
@@ -111,7 +114,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 		newGameItem.addActionListener(this);
 
 		difficultyGroup = new ButtonGroup();
-		themeGroup= new ButtonGroup();
+		themeGroup = new ButtonGroup();
 		languageGroup = new ButtonGroup();
 
 		beginnerItem = new JRadioButtonMenuItem("Beginner");
@@ -134,7 +137,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 		bombItem.setSelected(true);
 		bombItem.addActionListener(this);
 		catItem = new JRadioButtonMenuItem("Cat");
-		catItem.setSelected(true);
+		catItem.setSelected(false);
 		catItem.addActionListener(this);
 
 		themeGroup.add(bombItem);
@@ -321,7 +324,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 			GridButton b = (GridButton) o;
 			if (b.investigate()){
 				youLose();
-				if(theme == 1)
+				if(theme == 0)
 					b.setIcon(new ImageIcon("Bakgrunder/bangWhite.png"));
 				else
 					b.setIcon(new ImageIcon("Bakgrunder/redPaw3.png"));
@@ -368,6 +371,21 @@ public class Minesweeper extends JFrame implements ActionListener{
 			//super.update(); //HUR UPPDATERAR MAN fonstret???
 		}
 
+		//Change theme...
+		//Detta kommer inte att funka, ingen eventlistener på hela gruppen..
+	if(e.getSource() == themeGroup){
+		stopClock();
+		int int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to switch theme? \nA new game will start.", "Warning", JOptionPane.YES_NO_OPTION);
+
+		if(reply == JOptionPane.YES_OPTION){
+//themeGroup.id kommer inte att fungera
+			setTheme(themeGroup.id);
+		}
+		else{
+			startClock();
+		}
+	}
+		/* GAMMALT
 		if(e.getSource()==bombItem){
 			stopClock();
 			int reply = JOptionPane.showConfirmDialog(this, "Are you sure you want to switch theme? \nA new game will start.", "Warning", JOptionPane.YES_NO_OPTION);
@@ -378,17 +396,17 @@ public class Minesweeper extends JFrame implements ActionListener{
 				for(int j=1; j<10; j++) for(int i=1; i<10; i++){
 					buttons[i][j].setBackground(Color.BLACK);
 				}
-				mineLabel.setText("Bombs:");
-				timeLabel.setFont(bombFontL);
-				timeTA.setFont(bombFontS);
-				timeLabel.setForeground(bombFontColor);
-				mineLabel.setFont(bombFontL);
-				mineTA.setFont(bombFontS);
-				mineLabel.setForeground(bombFontColor);
-				volumeLabel.setFont(bombFontL);
-				volumeLabel.setForeground(bombFontColor);
-				bgLabel.setIcon(bgImage01);
-				theme = 1;
+				theme = 0;
+				bgLabel.setIcon(bgImages[theme]);
+				timeLabel.setForeground(fontColor[theme]);
+				timeLabel.setFont(largeFont[theme]);
+				timeTA.setFont(smallFont[theme]);
+				mineLabel.setFont(largeFont[theme]);
+				mineTA.setFont(smallFont[theme]);
+				mineLabel.setForeground(fontColor[theme]);
+				mineLabel.setText(themeText[theme]);
+				volumeLabel.setFont(largeFont[theme]);
+				volumeLabel.setForeground(fontColor[theme]);
 			}
 			else {
 				catItem.setSelected(true);
@@ -405,27 +423,48 @@ public class Minesweeper extends JFrame implements ActionListener{
 				for(int j=1; j<10; j++) for(int i=1; i<10; i++){
 					buttons[i][j].setBackground(Color.WHITE);
 				}
-				bgLabel.setIcon(bgImage02);
-				timeLabel.setForeground(catFontColor);
-				timeLabel.setFont(catFontS);
-				timeTA.setFont(catFontL);
-				mineLabel.setForeground(catFontColor);
-				mineLabel.setFont(catFontS);
-				mineLabel.setText("Cats:");
-				mineTA.setFont(catFontL);
-				volumeLabel.setFont(catFontS);
-				volumeLabel.setForeground(catFontColor);
-				theme = 2;
+				theme = 1;
+				bgLabel.setIcon(bgImages[theme]);
+				timeLabel.setForeground(fontColor[theme]);
+				timeLabel.setFont(smallFont[theme]);
+				timeTA.setFont(largeFont[theme]);
+				mineLabel.setForeground(fontColor[theme]);
+				mineLabel.setFont(smallFont[theme]);
+				mineLabel.setText(themeText[theme]);
+				mineTA.setFont(largeFont[theme]);
+				volumeLabel.setFont(smallFont[theme]);
+				volumeLabel.setForeground(fontColor[theme]);
 			}
 			else {
 				bombItem.setSelected(true);
 				startClock();
 			}
 		}
-
+		*/
 		if(e.getSource()==highscoreItem){
 			JOptionPane.showMessageDialog(this, "Highscore \nHar sta vem som har fatt mest poang \nnagonsin i MinesweeperInterfaceArrays historia!", "Highscore", 1);
 		}
+	}
+
+	//Set theme function
+	public void setTheme(int newTheme){
+		theme = newTheme;
+		//Skapa nytt spel mha Board kanske....
+		newGame();
+
+		startClock();
+		//Sätt alla temarelaterade grejer
+		bgLabel.setIcon(bgImages[theme]);
+		timeLabel.setFont(bombFontL);
+		timeLabel.setForeground(bombFontColor);
+		timeTA.setFont(bombFontS);
+		mineLabel.setForeground(bombFontColor);
+		mineLabel.setFont(bombFontL);
+		mineLabel.setText(themeText[theme]);
+		mineTA.setFont(bombFontS);
+		volumeLabel.setFont(bombFontL);
+		volumeLabel.setForeground(bombFontColor);
+		// Denna???? themeGroup.setSelected();
 	}
 
 	public static void main(String[] args) {
