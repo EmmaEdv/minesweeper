@@ -230,10 +230,11 @@ public class Minesweeper extends JFrame implements ActionListener{
 	}
     
     public void disableAll(){
-    	for(int i=1; i<10; i++) for(int j=1; j<10; j++){
-    		if(board.buttons[i][j].investigate()==false){
+    	for(int i=1; i<size; i++) for(int j=1; j<size; j++){
+    		//Varför kollar vi så att dte inte är en bom här?
+    		//if(board.buttons[i][j].investigate()==false){
     			board.buttons[i][j].setEnabled(false);
-    		}
+    		//}
     	}
     }
 

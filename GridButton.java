@@ -127,10 +127,10 @@ public class GridButton extends JButton{
     public void showBomb(int t){		//Visar bomb
     	if (bomb)
     		if (t==0){
-    			setIcon(new ImageIcon("Bakgrunder/bang.png"));
+    			setIcon(new ImageIcon("graphics/bang.png"));
     		}
     		else if (t==1) {
-    			setIcon(new ImageIcon("Bakgrunder/blackPaw3.png"));
+    			setIcon(new ImageIcon("graphics/blackPaw3.png"));
     		}
     }
 }

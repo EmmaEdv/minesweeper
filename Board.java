@@ -15,6 +15,7 @@ public class Board implements ActionListener{
 	private Minesweeper grid;
 	private Color buttonBGcolour;
 	private int theme;
+	//Number of bombs
 	public int noBombs = 10;
 
 	public Board(String difficulty, int theme, Minesweeper grid) {
