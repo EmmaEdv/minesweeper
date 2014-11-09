@@ -24,21 +24,25 @@ public class Minesweeper extends JFrame implements ActionListener{
 	private int theme, counter, left;
 	private JSlider volumeBar;
 	public JTextField mineTA, timeTA;
+	private difficulty = "beginner"; 
 
 	public GridButton [][] buttons = new GridButton[10][10];
 	public int [][] facit = new int[10][10];
 
 	private Color myBlack = new Color(0,0,0);
 	private Color myBlue = new Color(0,75,200);
+
 	final int FPS_MIN = 0;
 	final int FPS_MAX = 20;
 	final int FPS_INIT = 10;
+
 	public Timer clock;
 	public int secs = 0;
 	public int mins = 0;
 	public int hrs = 0;
 	public JLabel display;
 	private DecimalFormat dFormat = new DecimalFormat("00");
+	
 	public int rightClicks = 0;
 
 	//Font
@@ -51,7 +55,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 	private Color catFontColor = Color.BLACK;
 
 	public Minesweeper() {
-    Container c = getContentPane();
+    	Container c = getContentPane();
 		c.setLayout(null);
 
 		//Load backgrounds
@@ -214,7 +218,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 		setResizable(false);
 		setTitle("Sweeper!");
   }
-    
+
   //Denna lag fran borjan i konstruktorn dar newGame() ligger, 
   //flyttades hit for att man skall kunna starta ett nytt spel genom att klicka pa new game i menyn men det fungerar inte.
   public void newGame(){
