@@ -17,7 +17,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 
 	private JMenuBar menuBar;
 	private JMenu gameMenu, themeMenu, helpMenu, infoMenu, languageMenu;
-	private JMenuItem newGameItem, quitItem, aboutItem, rulesItem, highscoreItem; //Språk här eller som flagga?
+	private JMenuItem newGameItem, quitItem, aboutItem, rulesItem, highscoreItem; //Sprak har eller som flagga?
 	private JRadioButtonMenuItem beginnerItem, intermediateItem, expertItem, bombItem, catItem, sweItem, engItem; //fler teman?
 	private ButtonGroup difficultyGroup, themeGroup, languageGroup;
 	private JLabel bgLabel, mineLabel, timeLabel, volumeLabel;
@@ -31,9 +31,9 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 	private Color myRed = new Color(185,2,1);
 	private Color myBlack = new Color(0,0,0);
 	private Color myBlue = new Color(0,75,200);
-	final int FPS_MIN=0;
-	final int FPS_MAX=20;
-	final int FPS_INIT=10;
+	final int FPS_MIN = 0;
+	final int FPS_MAX = 20;
+	final int FPS_INIT = 10;
 	public Timer clock;
 	public int secs = 0;
 	public int mins = 0;
@@ -42,12 +42,12 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 	private DecimalFormat dFormat = new DecimalFormat("00");
 	public int rightClicks = 0;
 
-    public MinesweeperInterfaceArray() {
-    	Container c = getContentPane();
+  public MinesweeperInterfaceArray() {
+    Container c = getContentPane();
 		c.setLayout(null);
 		counter = 0;
-		bgImage02 = new ImageIcon("Bakgrunder/Cat-sweeper.png");
-		bgImage01 = new ImageIcon("Bakgrunder/BombBackground2.png");
+		bgImage02 = new ImageIcon("graphics/Cat-sweeper.png");
+		bgImage01 = new ImageIcon("graphics/BombBackground2.png");
 		theme=1;
 		bgLabel = new JLabel();
 		bgLabel.setIcon(bgImage01);
@@ -83,7 +83,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 		volumeBar.setOpaque(false);
 		volumeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
 
-		flag = new ImageIcon("Bakgrunder/flag.png");
+		flag = new ImageIcon("graphics/flag.png");
 		
 		menuBar = new JMenuBar();
 		gameMenu = new JMenu("Game");
@@ -177,7 +177,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 		infoMenu.add(aboutItem);
 		
 		
-		//GÖRA EN CREATEGRIDBUTTONSFUNKTION????
+		//GORA EN CREATEGRIDBUTTONSFUNKTION????
 		for(int j=1; j<10; j++){
 			for(int i=1; i<10; i++){
 				buttons[i][j]= new GridButton(i, j, this);
@@ -201,10 +201,10 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 		setTitle("Sweeper!");
     }
     
-    public void newGame(){  //Denna låg från början i konstruktorn där newGame() ligger, flyttades hit för att man skall kunna starta ett nytt spel genom att klicka på new game i menyn men det fungerar inte.
+    public void newGame(){  //Denna lag fran borjan i konstruktorn dar newGame() ligger, flyttades hit for att man skall kunna starta ett nytt spel genom att klicka pa new game i menyn men det fungerar inte.
     	int a = 0;
     	    
-    	//clock = new Timer(10, this);				//Skapa klocka, nollställ klocka, starta klocka.
+    	//clock = new Timer(10, this);				//Skapa klocka, nollstall klocka, starta klocka.
 		secs = 0;
 		mins = 0;
 		hrs = 0;
@@ -270,7 +270,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
     public void youWin(){
     	stopClock();    	
         JOptionPane.showMessageDialog(this, "Congratulations, you won!");
-		disableAll(); //det går inte att trycka på nån knapp						
+		disableAll(); //det gar inte att trycka pa nan knapp						
     }
 
     public void youlose(){
@@ -282,7 +282,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 				buttons[i][j].showBomb(theme);
 			}
 		}
-    	disableAll(); //det går inte att trycka på nån knapp
+    	disableAll(); //det gar inte att trycka pa nan knapp
 
     }
 
@@ -301,7 +301,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 		if(e.getSource()==rulesItem){
 			JOptionPane.showMessageDialog(this, "The rules in Minesweeper are simple: \n Uncover a mine, and the game ends." +
 												"\n Uncover an empty square, and you keep playing. \n Uncover a number, and it tells you how many mines lay hidden in the eight surrounding \n" +
-												" squares—information you use to deduce which nearby squares are safe to click.", "Rules", 1);
+												" squares information you use to deduce which nearby squares are safe to click.", "Rules", 1);
 		}
 
 		if(e.getSource()==aboutItem){
@@ -360,9 +360,9 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 	
 		timeTA.setText(dFormat.format(hrs) + ":" + dFormat.format(mins) + ":" + dFormat.format(secs));
 		
-		if(e.getSource()==newGameItem){ //Måste uppdatera fönstret på något sätt
+		if(e.getSource()==newGameItem){ //Maste uppdatera fonstret pa nagot satt
 			newGame();
-			//super.update(); //HUR UPPDATERAR MAN fönstret???
+			//super.update(); //HUR UPPDATERAR MAN fonstret???
 		}
 		
 		if(e.getSource()==bombItem){
@@ -421,7 +421,7 @@ public class MinesweeperInterfaceArray extends JFrame implements ActionListener{
 		}
 		
 		if(e.getSource()==highscoreItem){
-			JOptionPane.showMessageDialog(this, "Highscore \nHär stå vem som har fått mest poäng \nnågonsin i MinesweeperInterfaceArrays historia!", "Highscore", 1);
+			JOptionPane.showMessageDialog(this, "Highscore \nHar sta vem som har fatt mest poang \nnagonsin i MinesweeperInterfaceArrays historia!", "Highscore", 1);
 		}
 
 	}

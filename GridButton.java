@@ -25,7 +25,7 @@ public class GridButton extends JButton{
     	grey = new Color(200, 200, 200);
     }
 
-	public void reset(int t){			//Nollställer knapp
+	public void reset(int t){			//Nollstaller knapp
 		bomb = false;
 		//remove pictures and text, por favor!
 		setEnabled(true);
@@ -70,7 +70,7 @@ public class GridButton extends JButton{
     	return true;
 	}
 	
-    public boolean hasBomb(){	//berättar ifall det finns bomb
+    public boolean hasBomb(){	//berattar ifall det finns bomb
     	return bomb;
     }
 
@@ -84,16 +84,16 @@ public class GridButton extends JButton{
     	return n;
     }
 
-    public void allCloseGray(){ //kollar ifall det finns gråa runt ikring egna knappen
+    public void allCloseGray(){ //kollar ifall det finns graa runt ikring egna knappen
     	for(int g=1; g<10; g++) for(int r=1; r<10; r++){
     		if(grid.buttons[g][r].checkNeighbours()==0){
     			for(int h=x-1; h<=x+1; h++) for(int f=y-1; f<=y+1; f++) { //h=rad, f=kolumn	    			
 	    			if (h<1 || h>9 || f<1 || f>9)
 	    				continue;
-	    			if(grid.buttons[h][f].checkNeighbours()!=0) //om det inte är en grå ruta som granne, hoppa över rutan
+	    			if(grid.buttons[h][f].checkNeighbours()!=0) //om det inte ar en gra ruta som granne, hoppa over rutan
 	    				continue;
 	    				
-	    			if(grid.buttons[h][f].checkNeighbours()==0 && grid.facit[h][f] < 9){ //om grannen är grå, sätt den som grå
+	    			if(grid.buttons[h][f].checkNeighbours()==0 && grid.facit[h][f] < 9){ //om grannen ar gra, satt den som gra
 	    				grid.buttons[h][f].setBackground(grey);
 	    				grid.facit[h][f] = 10;
 
@@ -103,7 +103,7 @@ public class GridButton extends JButton{
     	}
     }
 
-    public boolean investigate(){   //Undersöker: Är det en bomb?
+    public boolean investigate(){   //Undersoker: Ar det en bomb?
     	if (bomb){
     		return true;
     	}
@@ -111,7 +111,7 @@ public class GridButton extends JButton{
     		int closeBombs = checkNeighbours();
     		if(closeBombs==0){
     			setLabel("");
-    			allCloseGray();				//FÅ DEN ATT GÖRA SÅ ATT ALLA TOMMA RUTOR BLIR SYNLIGA OM MAN KLICKAR PÅ EN. GÖR EN METOD FÖR DETTA
+    			allCloseGray();				//FA DEN ATT GORA SA ATT ALLA TOMMA RUTOR BLIR SYNLIGA OM MAN KLICKAR PA EN. GOR EN METOD FOR DETTA
     		}
     		else{
     		//	allCloseGray();

@@ -3,7 +3,8 @@
  *
  *
  * @Karjo och Slemma 
- * @version 1.00 2011/9/19
+ * @version 1.10 2014/10/09
+ * 
  */
  
 import java.awt.*;
@@ -16,7 +17,7 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
     	
 	private JMenuBar menuBar;
 	private JMenu gameMenu, themeMenu, helpMenu, infoMenu;
-	private JMenuItem newGameItem, quitItem, aboutItem, rulesItem; //Språk här eller som flagga? 
+	private JMenuItem newGameItem, quitItem, aboutItem, rulesItem; //Sprak har eller som flagga? 
 	private JRadioButtonMenuItem beginnerItem, intermediateItem, expertItem, bombItem; //fler teman?
 	private ButtonGroup difficultyGroup;
 	private JButton button11, button12, button13, button14, button15, button16, button17, button18, button19; //, button110, button111, button112, button113, button114, button115, button116, button117, button118, button119, button120, button121, button122, button123, button124, button125, button126, button127, button128, button129, button130;
@@ -31,7 +32,7 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
 	private JLabel bgLabel;
 	private ImageIcon bgImage01;
     
-    public MinesweeperInterface() {	
+  public MinesweeperInterface() {	
     	Container c = getContentPane();
 		c.setLayout(null);
 		
@@ -45,7 +46,7 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
 		gameMenu = new JMenu("Game");
 		newGameItem = new JMenuItem("New Game");
 		
-		difficultyGroup = new ButtonGroup(); //Varför gropar den inte? :(
+		difficultyGroup = new ButtonGroup(); //Varfor gropar den inte? :(
 		difficultyGroup.add(beginnerItem);
 		difficultyGroup.add(intermediateItem);
 		difficultyGroup.add(expertItem);
@@ -86,7 +87,7 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
 		helpMenu.add(rulesItem);
 		infoMenu.add(aboutItem);
 		
-		
+		/*
 		for(int i=1; i<=9; i++){
 			String a = "button1"+i;
 			a = new JButton();
@@ -96,8 +97,8 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
 			}
 			button1i.setBackground(Color.BLACK);
 			c.add(button1i);
-		}
-		/*
+		}*/
+		
 		button11 = new JButton();
 		button12 = new JButton();
 		button13 = new JButton();
@@ -134,7 +135,7 @@ public class MinesweeperInterface extends JFrame implements ActionListener {
 		c.add(button17);
 		c.add(button18);
 		c.add(button19);
-		*/
+		
 		button21 = new JButton();
 		button22 = new JButton();
 		button23 = new JButton();
