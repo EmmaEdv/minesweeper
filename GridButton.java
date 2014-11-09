@@ -11,12 +11,12 @@ public class GridButton extends JButton{
 
 	private int x, y;
 	private boolean bomb = false;
-	private MinesweeperInterfaceArray grid;
+	private Minesweeper grid;
 	private ImageIcon bang;
 	private Color grey;
 	//private int [][] facit = new int[10][10];;
 
-    public GridButton(int x, int y, MinesweeperInterfaceArray grid) {
+    public GridButton(int x, int y, Minesweeper grid) {
     	super(); //JButton-konstruktor kors
     	this.x = x;
     	this.y = y;
@@ -56,8 +56,7 @@ public class GridButton extends JButton{
 		return facit;
 	}*/
 	
-	public boolean win()
-	{
+	public boolean win(){
 		for(int i=1; i<10; i++){
     		for(int j=1; j<10; j++){
     			if(grid.facit[i][j] < 9){

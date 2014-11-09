@@ -5,10 +5,10 @@ import javax.swing.*;
 public class RightClicker extends MouseAdapter {
 	
 	private int x, y;
-	private MinesweeperInterfaceArray grid;
+	private Minesweeper grid;
 	private String bg = "graphics/flag.png";
 	
-	public RightClicker(int x, int y, MinesweeperInterfaceArray grid) {
+	public RightClicker(int x, int y, Minesweeper grid) {
 		super(); //JButton-konstruktor kors
 		this.x = x;
 		this.y = y;

@@ -287,8 +287,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 
     	for(int j=1; j<10; j++){ //kolumn
 				for(int i=1; i<10; i++){ //rad
-				
-					buttons[i][j].(theme);
+					buttons[i][j].showBomb(theme);
 				}
 			}
     	disableAll(); //det gar inte att trycka pa nan knapp
@@ -323,7 +322,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 			startClock();
 			GridButton b = (GridButton) o;
 			if (b.investigate()){
-				youlose();
+				youLose();
 				if(theme == 1)
 					b.setIcon(new ImageIcon("Bakgrunder/bangWhite.png"));
 				else
