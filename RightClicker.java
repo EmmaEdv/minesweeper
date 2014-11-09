@@ -6,26 +6,24 @@ public class RightClicker extends MouseAdapter {
 	
 	private int x, y;
 	private Minesweeper grid;
-	private String bg = "graphics/flag.png";
+	private Board board;
+//	private String bg = "graphics/flag.png";
 	
-	public RightClicker(int x, int y, Minesweeper grid) {
+	public RightClicker(int x, int y, Minesweeper grid, Board board) {
 		super(); //JButton-konstruktor kors
 		this.x = x;
 		this.y = y;
 		this.grid = grid;
+		this.board = board;
 	}
 	
    	public void mousePressed( MouseEvent e ) {
         if ( e.isMetaDown() ) {
-/*	        	if(grid.buttons[x][y].getIcon() == bg){
-        		grid.buttons[x][y].setBackground(Color.BLACK);
-        	}
-        	else*/
-				grid.buttons[x][y].setIcon(new ImageIcon("graphics/flag.png"));
+        		if(grid.theme == 0)	board.buttons[x][y].setIcon(new ImageIcon("graphics/flag_black.png"));
+				if(grid.theme == 1)	board.buttons[x][y].setIcon(new ImageIcon("graphics/flag_white.png"));
+        		
 				grid.rightClicks++;
-				grid.mineTA.setText(grid.rightClicks + "/10");
-			//grid.buttons[x][y].setEnabled(false);
-			//System.out.println(grid.buttons[x][y].getIcon());
+				grid.mineTA.setText(grid.rightClicks + "/" + board.noBombs);
         }
     }
 }

@@ -21,11 +21,17 @@ public class Minesweeper extends JFrame implements ActionListener{
 	private ButtonGroup difficultyGroup, themeGroup, languageGroup;
 	private JLabel bgLabel, mineLabel, timeLabel, volumeLabel;
 	private ImageIcon bgImage01, bgImage02, flag;
-	private int theme, counter, left;
+	public int theme; 
+	private int counter, left;
 	private JSlider volumeBar;
 	public JTextField mineTA, timeTA;
-	private difficulty = "beginner"; 
+	private String difficulty = "beginner"; 
+	private int size = 9;
 
+	private Color myRed = new Color(185,2,1);
+	private Color myBlack = new Color(0,0,0);
+	private Color myBlue = new Color(0,75,200);
+	
 	final int FPS_MIN = 0;
 	final int FPS_MAX = 20;
 	final int FPS_INIT = 10;
@@ -36,12 +42,17 @@ public class Minesweeper extends JFrame implements ActionListener{
 	public int hrs = 0;
 	public JLabel display;
 	private DecimalFormat dFormat = new DecimalFormat("00");
-	
+	public Board board;
+
 	public int rightClicks = 0;
 
 	public Minesweeper() {
     	Container c = getContentPane();
 		c.setLayout(null);
+
+		if(difficulty == "beginner") size = 9;
+		if(difficulty == "intermediate") size = 16;
+		if(difficulty == "expert") size = 22;
 
 		//counter = 0;
 		//Load backgrounds
@@ -87,7 +98,7 @@ public class Minesweeper extends JFrame implements ActionListener{
 		volumeBar.setOpaque(false);
 		volumeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
 
-		flag = new ImageIcon("graphics/flag.png");
+		//flag = new ImageIcon("graphics/flag.png");
 		
 		//Menu
 		menuBar = new JMenuBar();
@@ -179,21 +190,13 @@ public class Minesweeper extends JFrame implements ActionListener{
 		helpMenu.add(rulesItem);
 		infoMenu.add(aboutItem);
 		
-		
-		//GORA EN CREATEGRIDBUTTONSFUNKTION????
-		//Create all buttons 
-		for(int j=1; j<10; j++){
-			for(int i=1; i<10; i++){
-				buttons[i][j]= new GridButton(i, j, this);
-				buttons[i][j].setBackground(Color.BLACK);
-				buttons[i][j].addActionListener(this);
-				buttons[i][j].addMouseListener(new RightClicker(i, j, this));
-				buttons[i][j].setBounds(j*30+125,i*30+295,30,30);
-				c.add(buttons[i][j]);
+		newGame();
+
+		for(int j=0; j<size; j++){
+			for(int i=0; i<size; i++){	
+				c.add(board.buttons[i][j]);
 			}
 		}
-		
-		newGame();
 
 		quitItem.addActionListener(this);
 		c.add(bgLabel);
@@ -206,67 +209,30 @@ public class Minesweeper extends JFrame implements ActionListener{
     }
     
     public void newGame(){  
-    	int nrOfMines = 0;
     	    
 	   	//clock = new Timer(10, this);				//Skapa klocka, nollstall klocka, starta klocka.
 			secs = 0;
 			mins = 0;
 			hrs = 0;
 			rightClicks = 0;
-	    stopClock();
+		    stopClock();
 			timeTA.setText("00:00:00");
-	    mineTA.setText(rightClicks + "/10");
-	    	
-	  	for(int i=1; i<10; i++){
-	  		for(int j=1; j<10; j++){
-	  			buttons[i][j].reset(theme);
-	  			
-	  		}
-	  	}
-	    	
-			while(nrOfMines < 10) {
-				Random r = new Random();
-				int x = r.nextInt(9) + 1;
-				int y = r.nextInt(9) + 1;
-
-				//ta fram random pos
-				
-				if (buttons[x][y].plantBomb()) {
-					nrOfMines++;
-					facit[x][y] = 9;
-				}
-			}
-					
-			for(int i=1; i<10; i++){
-	    		for(int j=1; j<10; j++){
-	    			if(!buttons[i][j].hasBomb())
-	    				facit[i][j] = buttons[i][j].checkNeighbours();
-	    				
-	    			System.out.println(facit[i][j]);
-	    			
-	    		}
-	    	}
-			
-			/*for(int i=1; i<10; i++){
-				for(int j=1; j<10; j++){
-					facit[i][j] = 0;
-				}
-			}*/
-	    }
+		    mineTA.setText(rightClicks + "/10");
+	    	board = new Board(difficulty, theme, this);			
+	}
 	    
-	    public void startClock(){
-				clock.start();
-			}
+	public void startClock(){
+		clock.start();
+	}
 		
-		public void stopClock(){
-			clock.stop();
-		}
-
+	public void stopClock(){
+		clock.stop();
+	}
     
     public void disableAll(){
     	for(int i=1; i<10; i++) for(int j=1; j<10; j++){
-    		if(buttons[i][j].investigate()==false){
-    			buttons[i][j].setEnabled(false);
+    		if(board.buttons[i][j].investigate()==false){
+    			board.buttons[i][j].setEnabled(false);
     		}
     	}
     }
@@ -282,11 +248,10 @@ public class Minesweeper extends JFrame implements ActionListener{
 
     	for(int j=1; j<10; j++){ //kolumn
 				for(int i=1; i<10; i++){ //rad
-					buttons[i][j].showBomb(theme);
+					board.buttons[i][j].showBomb(theme);
 				}
 			}
     	disableAll(); //det gar inte att trycka pa nan knapp
-
     }
 
     WindowListener frameListener = new WindowAdapter() {
@@ -329,13 +294,13 @@ public class Minesweeper extends JFrame implements ActionListener{
 				youWin();
 			}
 			
-			for(int i=1; i<10; i++){
+/*			for(int i=1; i<10; i++){
     			for(int j=1; j<10; j++){
 
     			System.out.println(facit[i][j]);
     			
     			}
-    		}
+    		} */
     		System.out.println(":");
 		}
 		
@@ -374,9 +339,6 @@ public class Minesweeper extends JFrame implements ActionListener{
 			if(reply == JOptionPane.YES_OPTION){
 				startClock();
 				newGame();
-				for(int j=1; j<10; j++) for(int i=1; i<10; i++){
-					buttons[i][j].setBackground(Color.BLACK);
-				}
 				mineLabel.setText("Bombs:");
 				timeLabel.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 25));
 				timeTA.setFont(new Font("Copperplate Gothic Light", Font.BOLD, 15));
@@ -401,9 +363,6 @@ public class Minesweeper extends JFrame implements ActionListener{
 			if(reply == JOptionPane.YES_OPTION){
 				startClock();
 				newGame();
-				for(int j=1; j<10; j++) for(int i=1; i<10; i++){
-					buttons[i][j].setBackground(Color.WHITE);
-				}
 				bgLabel.setIcon(bgImage02);
 				timeLabel.setForeground(Color.BLACK);
 				timeLabel.setFont(new Font("Gill Sans", Font.BOLD, 25));
